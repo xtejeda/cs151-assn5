@@ -13,7 +13,7 @@ import java.io.File;
  */
 public class Assignment5
 {
-    public static final int SEED = 104395301;
+    public static final int SEED = 1034701;
 
     public static void main(String[] args) throws Exception
     {
@@ -25,14 +25,14 @@ public class Assignment5
         double spamTest = 0.0;
         double hamTest = 0.0;
 
-        double[] spamValues = new double[9275];
-        double[] hamValues = new double[9275];
+        double[] spamValues = new double[9276];
+        double[] hamValues = new double[9276];
 
-        double[] spamProb = new double[9275];
-        double[] hamProb = new double[9275];
+        double[] spamProb = new double[9276];
+        double[] hamProb = new double[9276];
 
-        double[][] trainingArray = new double[2798][9275];
-        double[][] testArray = new double[2798][9275];
+        double[][] trainingArray = new double[2798][9276];
+        double[][] testArray = new double[2798][9276];
 
         final MersenneTwister randomForSampling = new MersenneTwister(SEED);
         File file = new File(Assignment5.class.getClassLoader()
@@ -49,21 +49,22 @@ public class Assignment5
             k++;
         }
 
+        final MersenneTwister randomFortesting = new MersenneTwister(SEED);
         csvObsProvider.reset();
-        SampledObservationProvider testSet = new SampledObservationProvider(.10, csvObsProvider, randomForSampling, true);
+        SampledObservationProvider testSet = new SampledObservationProvider(.90, csvObsProvider, randomFortesting, false);
         int l = 0;
         while(testSet.hasNext() && l < 279)
         {
-            System.out.println(l);
+            //System.out.println(l);
             testArray[l] = testSet.next().getFeatures();
             l++;
         }
 
         for(int i = 0; i < 2518; i++)
         {
-            for(int j = 0; j < 9275; j++)
+            for(int j = 0; j < 9276; j++)
             {
-                if(trainingArray[i][9274] == 1)
+                if(trainingArray[i][testArray[0].length-1] == 1)
                 {
                     spamValues[j] = spamValues[j] + trainingArray[i][j];
                     spamTotal++;
@@ -76,15 +77,17 @@ public class Assignment5
             }
         }
 
-        for(int a = 0; a < 9275; a++)
+        for(int a = 0; a < 9276; a++)
         {
             spamProb[a] = ( spamValues[a] + 1 ) / ( spamTotal + 9275 );
         }
 
-        for(int b = 0; b < 9275; b++)
+        for(int b = 0; b < 9276; b++)
         {
             hamProb[b] = ( hamValues[b] + 1 ) / ( hamTotal + 9275 );
         }
+
+        System.out.println(hamTotal + "\t"+spamTotal);
 
 
         for(int c = 0; c < 279; c++)
@@ -94,31 +97,34 @@ public class Assignment5
             int test=0;
             for (int d = 0; d < 9275; d++)
             {
-                //System.out.print(Math.log10(spamProb[10]));
                 test += testArray[c][d];
-                spamTest = spamTest + testArray[c][d] * Math.abs( Math.log10(spamProb[d]) );
-                hamTest = hamTest +  testArray[c][d] * Math.abs( Math.log10(hamProb[d]) );
+                spamTest = spamTest + testArray[c][d] *  Math.log10(spamProb[d]) ;
+                hamTest = hamTest +  testArray[c][d] *  Math.log10(hamProb[d]) ;
             }
-            System.out.println("\n"+spamTest+" >? "+hamTest + "\t" +test);
+            System.out.println("\n"+spamTest+" >? "+hamTest + "\t" +testArray[c][testArray[c].length-1]);
             if(spamTest > hamTest)
             {
-                if(testArray[c][9274] == 1)
+                if(testArray[c][testArray[c].length-1] >= .9)
                 {
+                    System.out.println(1);
                     confusionMatrix[1][1]++;
                 }
                 else
                 {
+                    System.out.println(2);
                     confusionMatrix[1][0]++;
                 }
             }
             else
             {
-                if(testArray[c][9274] == 0)
+                if(testArray[c][testArray[c].length-1] <= 0.1)
                 {
+                    System.out.println(3);
                     confusionMatrix[0][0]++;
                 }
                 else
                 {
+                    System.out.println(4);
                     confusionMatrix[0][1]++;
                 }
             }
