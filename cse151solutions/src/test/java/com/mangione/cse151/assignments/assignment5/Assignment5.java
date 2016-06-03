@@ -22,8 +22,8 @@ public class Assignment5
 
         int[][] confusionMatrix = new int[2][2];
 
-        double spamTest = 0;
-        double hamTest = 0;
+        double spamTest = 0.0;
+        double hamTest = 0.0;
 
         double[] spamValues = new double[9275];
         double[] hamValues = new double[9275];
@@ -40,18 +40,19 @@ public class Assignment5
         CsvObservationProvider<Observation> csvObsProvider = new CsvObservationProvider<>(file, new ObservationFactory());
 
         SampledObservationProvider trainingSet = new SampledObservationProvider(.10, csvObsProvider, randomForSampling, false);
-        SampledObservationProvider testSet = new SampledObservationProvider(.10, csvObsProvider, randomForSampling, true);
 
         int k = 0;
         while(trainingSet.hasNext() && k < 2798)
         {
-            System.out.println(k);
+            //System.out.println(k);
             trainingArray[k] = trainingSet.next().getFeatures();
             k++;
         }
 
+        csvObsProvider.reset();
+        SampledObservationProvider testSet = new SampledObservationProvider(.10, csvObsProvider, randomForSampling, true);
         int l = 0;
-        while(testSet.hasNext() && l < 2798)
+        while(testSet.hasNext() && l < 279)
         {
             System.out.println(l);
             testArray[l] = testSet.next().getFeatures();
@@ -88,11 +89,17 @@ public class Assignment5
 
         for(int c = 0; c < 279; c++)
         {
+            hamTest=0.0;
+            spamTest=0.0;
+            int test=0;
             for (int d = 0; d < 9275; d++)
             {
-                spamTest = spamTest * Math.pow(spamProb[d], testArray[c][d]);
-                hamTest = hamTest * Math.pow(hamProb[d], testArray[c][d]);
+                //System.out.print(Math.log10(spamProb[10]));
+                test += testArray[c][d];
+                spamTest = spamTest + testArray[c][d] * Math.abs( Math.log10(spamProb[d]) );
+                hamTest = hamTest +  testArray[c][d] * Math.abs( Math.log10(hamProb[d]) );
             }
+            System.out.println("\n"+spamTest+" >? "+hamTest + "\t" +test);
             if(spamTest > hamTest)
             {
                 if(testArray[c][9274] == 1)
