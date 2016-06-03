@@ -1,0 +1,17 @@
+com/mangione/cse151/sampling/SamplingWithoutReplacementTest$MockRandom.class
+com/mangione/cse151/observationproviders/ArrayObservationProviderTest.class
+com/mangione/cse151/assignments/assignment1/Assignment1.class
+com/mangione/cse151/classifiers/SortedArrayTest.class
+com/mangione/cse151/assignments/assignment2/ConfusionMatrix.class
+com/mangione/cse151/datagenerators/DiscreteExemplarGeneratorTest.class
+com/mangione/cse151/datagenerators/ScaledDiscreteExemplarGeneratorTest.class
+com/mangione/cse151/househoulders/HouseHoldersTest.class
+com/mangione/cse151/assignments/assignment2/Assignment2.class
+com/mangione/cse151/assignments/assignment1/Stats.class
+com/mangione/cse151/datagenerators/RandomUnitVectorTest.class
+com/mangione/cse151/sampling/SamplingWithoutReplacementTest.class
+com/mangione/cse151/zscale/ColumnZScaleTest.class
+com/mangione/cse151/observationproviders/CsvObservationProviderTest.class
+com/mangione/cse151/assignments/assignment1/XYRenderer.class
+com/mangione/cse151/classifiers/NNearestNeighborTest.class
+com/mangione/cse151/zscale/ZScaleObservationProviderTest.class
