@@ -54,5 +54,15 @@ public class Assignment5
                 }
             }
         }
+
+        for(int a = 0; a < 9275; a++)
+        {
+            spamProb[a] = ( spamValues[a] + 1 ) / ( spamTotal + 9275 );
+        }
+
+        for(int b = 0; b < 9275; a++)
+        {
+            hamProb[b] = ( hamValues[b] + 1 ) / ( hamTotal + 9275 );
+        }
     }
 }
